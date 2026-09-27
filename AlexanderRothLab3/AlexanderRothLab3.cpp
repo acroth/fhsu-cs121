@@ -60,7 +60,7 @@ bool continuePrompt() {
     char choice;
     cout << "Do you want to enter another grade? (y/n): ";
     // input validation
-    while (!(cin >> choice)){
+    while (!(cin >> choice) || (choice != 'y' && choice != 'Y' && choice != 'n' && choice != 'N')){
         cout << "Invalid input. Please enter 'y' or 'n': ";
         cin.clear();
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
