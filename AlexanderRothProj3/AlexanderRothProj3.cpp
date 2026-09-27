@@ -13,9 +13,15 @@ should always move first.
 
 using namespace std;
 
-int getUserMove() {
+int getUserMove(bool isFirstTurn) {
     int move;
-    cout << "Enter the number of toothpicks to withdraw (1-3): ";
+    if (isFirstTurn) {
+        cout << "Enter the number of sticks you wish to pick (1-3): ";
+    }
+    else {
+        cout << "Your Turn! Enter the number of sticks you wish to pick (1-3): ";
+    }
+
     while (!(cin >> move) || (move < 1 || move > 3)) {
         cout << "Invalid input. Please enter a number between 1 and 3: ";
         cin.clear();
@@ -25,16 +31,9 @@ int getUserMove() {
 }
 
 int getComputerMove(int toothpicksRemaining , int userMove) {
-    int move;
-
-    if (toothpicksRemaining > 4) {
-        move = 4 - userMove;
-    }
-    else if (toothpicksRemaining > 2 || (toothpicksRemaining < 4)) {
-        move = toothpicksRemaining % 4;
-    }
-    else {
-        move = 1; // Default move if none of the above conditions are met
+    int move = (toothpicksRemaining - 1) % 4;
+    if (move == 0) {
+        move = 1;
     }
     return move;
 }
@@ -54,22 +53,27 @@ bool continueGame() {
 
 
 int main() {
+    cout << "Lets play a game of 23!" << endl;
     do {
+        bool isFirstTurn = true;
         int toothpicksRemaining = 23;
         while (toothpicksRemaining > 0) {
-            int userMove = getUserMove();
+            int userMove = getUserMove(isFirstTurn);
+            isFirstTurn = false;
             toothpicksRemaining -= userMove;
-            if (toothpicksRemaining == 0) {
+            if (toothpicksRemaining < 0) {
                 cout << "You withdrew the last toothpick. You lose!" << endl;
                 break;
             }
+            cout << "You picked " << userMove << " stick(s) "  << toothpicksRemaining << " left" << endl;
             int computerMove = getComputerMove(toothpicksRemaining, userMove);
             cout << "Computer withdraws " << computerMove << " toothpicks." << endl;
             toothpicksRemaining -= computerMove;
-            if (toothpicksRemaining == 0) {
+            if (toothpicksRemaining < 0) {
                 cout << "The computer withdrew the last toothpick. You win!" << endl;
                 break;
             }
+            cout << "Computer picked " << computerMove << " stick(s) "  << toothpicksRemaining << " left" << endl;
         }
     } while (continueGame());
     return 0;
