@@ -13,17 +13,22 @@ should always move first.
 
 using namespace std;
 
-int getUserMove(bool isFirstTurn) {
+int getUserMove(bool isFirstTurn, int toothpicksRemaining) {
     int move;
     if (isFirstTurn) {
         cout << "Enter the number of sticks you wish to pick (1-3): ";
     }
     else {
-        cout << "Your Turn! Enter the number of sticks you wish to pick (1-3): ";
+        cout << "Your Turn! Enter the number of sticks you wish to pick (1-3):";
     }
 
-    while (!(cin >> move) || (move < 1 || move > 3)) {
-        cout << "Invalid input. Please enter a number between 1 and 3: ";
+    while (!(cin >> move) || (move < 1 || move > 3) || (move > toothpicksRemaining)) {
+        if (move > toothpicksRemaining) {
+            cout << "You cannot pick more sticks than are remaining. Please pick again:  ";
+        }
+        else {
+            cout << "Wrong Number of sticks. Please pick 1, 2, or 3 sticks: ";
+        }
         cin.clear();
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
     }
@@ -32,12 +37,8 @@ int getUserMove(bool isFirstTurn) {
 
 int getComputerMove(int toothpicksRemaining , int userMove) {
     int move = (toothpicksRemaining - 1) % 4;
-    if (move == 0) {
-        move = 1;
-    }
     return move;
 }
-
 bool continueGame() {
     char choice;
     cout << "Do you want to play again? (y/n): ";
@@ -58,19 +59,18 @@ int main() {
         bool isFirstTurn = true;
         int toothpicksRemaining = 23;
         while (toothpicksRemaining > 0) {
-            int userMove = getUserMove(isFirstTurn);
+            int userMove = getUserMove(isFirstTurn, toothpicksRemaining);
             isFirstTurn = false;
             toothpicksRemaining -= userMove;
-            if (toothpicksRemaining < 0) {
-                cout << "You withdrew the last toothpick. You lose!" << endl;
+            if (toothpicksRemaining <= 0) {
+                cout << "You picked the last stick. You lose!" << endl;
                 break;
             }
             cout << "You picked " << userMove << " stick(s) "  << toothpicksRemaining << " left" << endl;
             int computerMove = getComputerMove(toothpicksRemaining, userMove);
-            cout << "Computer withdraws " << computerMove << " toothpicks." << endl;
             toothpicksRemaining -= computerMove;
-            if (toothpicksRemaining < 0) {
-                cout << "The computer withdrew the last toothpick. You win!" << endl;
+            if (toothpicksRemaining <= 0) {
+                cout << "The computer picked the last stick. You win!" << endl;
                 break;
             }
             cout << "Computer picked " << computerMove << " stick(s) "  << toothpicksRemaining << " left" << endl;
