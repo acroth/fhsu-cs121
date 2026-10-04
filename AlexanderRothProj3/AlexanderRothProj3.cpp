@@ -14,6 +14,7 @@ should always move first.
 using namespace std;
 
 int getUserMove(bool isFirstTurn, int toothpicksRemaining) {
+    // Prompt the user for their move and validate it
     int move;
     if (isFirstTurn) {
         cout << "Enter the number of sticks you wish to pick (1-3): ";
@@ -36,10 +37,12 @@ int getUserMove(bool isFirstTurn, int toothpicksRemaining) {
 }
 
 int getComputerMove(int toothpicksRemaining , int userMove) {
+    // Calculate the computer's move based on the remaining toothpicks and the user's move
     int move = (toothpicksRemaining - 1) % 4;
     return move;
 }
 bool continueGame() {
+    // Prompt the user to continue playing the game and validate their input
     char choice;
     cout << "Do you want to play again? (y/n): ";
     while (!(cin >> choice) || (choice != 'y' && choice != 'Y' && choice != 'n' && choice != 'N')) {
@@ -56,8 +59,10 @@ bool continueGame() {
 int main() {
     cout << "Lets play a game of 23!" << endl;
     do {
+        //  loop number check for proper message display
         bool isFirstTurn = true;
         int toothpicksRemaining = 23;
+        // Main game loop
         while (toothpicksRemaining > 0) {
             int userMove = getUserMove(isFirstTurn, toothpicksRemaining);
             isFirstTurn = false;
