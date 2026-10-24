@@ -42,7 +42,7 @@ void startGame() {
     std::cout << "Game is started!" << std::endl;
 }
 
-int generateRandomNumber(int min, int max) {
+int generateRandomNumber( int min, int max) {
     // Logic to generate the random number between the min and max values
     std::srand(std::time(0));
     return std::rand() % (max - min + 1) + min;
